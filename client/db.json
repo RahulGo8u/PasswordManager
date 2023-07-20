@@ -1,0 +1,17 @@
+{
+    "passwords": [
+      {
+        "id": 1,
+        "title": "Email Password",
+        "username": "user@example.com",
+        "password": "securepassword1"
+      },
+      {
+        "id": 2,
+        "title": "Bank Account Password",
+        "username": "username123",
+        "password": "mybankpassword"
+      }
+    ]
+  }
+  
