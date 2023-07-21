@@ -1,21 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 function PasswordList() {
-  const [passwords, setPasswords] = useState([]);
-
-  useEffect(() => {
-    fetchPasswords();
-  }, []);
-
-  const fetchPasswords = async () => {
-    try {
-      const response = await fetch('http://localhost:5000/passwords');
-      const data = await response.json();
-      setPasswords(data);
-    } catch (error) {
-      console.error('Error fetching passwords:', error);
-    }
-  };
+  const passwords = [
+    {
+      id: 1,
+      title: 'Email Password',
+      username: 'user@example.com',
+      password: 'securepassword1',
+      domain: 'example.com',
+    },
+    {
+      id: 2,
+      title: 'Bank Account Password',
+      username: 'username123',
+      password: 'mybankpassword',
+      domain: 'mybank.com',
+    },
+  ];
 
   return (
     <div>
@@ -26,6 +27,7 @@ function PasswordList() {
             <strong>{password.title}</strong>
             <p>Username: {password.username}</p>
             <p>Password: {password.password}</p>
+            <p>Domain: {password.domain}</p>
           </li>
         ))}
       </ul>
