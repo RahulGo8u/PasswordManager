@@ -7,7 +7,6 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
-  const [jwtToken, setJwtToken] = useState(null);
   const navigate = useNavigate(); // Get the navigate function from react-router-dom
 
   const handleSignInWithEmail = async () => {
@@ -35,7 +34,6 @@ const Login = () => {
       const decodedToken = parseJwt(jwtToken);
       console.log('decodedToken');
       console.log(decodedToken);
-      setJwtToken(decodedToken);
       navigate('/userdetail'); // Redirect to UserDetail component after successful login with Google
     } catch (err) {
       setError(err.message);
@@ -53,34 +51,49 @@ const Login = () => {
   };
 
   return (
-    <div className="container mt-5">
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <div className="mb-3">
-        <label className="form-label">Email</label>
+    <div className="container mt-5 bg-light p-4 rounded" style={{ maxWidth: "400px" }}>
+    <h2 className="mb-4 text-center">Login</h2>
+    {error && <p className="text-danger mb-3">{error}</p>}
+    <div className="row justify-content-center mb-3">
+      <div className="col-sm-12">
+        <label htmlFor="email" className="form-label">Email</label>
         <input
           type="email"
           className="form-control"
+          id="email"
           placeholder="Email.."
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
       </div>
-      <div className="mb-3">
-        <label className="form-label">Password</label>
+    </div>
+    <div className="row justify-content-center mb-4">
+      <div className="col-sm-12">
+        <label htmlFor="password" className="form-label">Password</label>
         <input
           type="password"
           className="form-control"
+          id="password"
           placeholder="Password.."
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>
-      <button className="btn btn-primary me-3" onClick={handleSignInWithEmail}>Sign in with Email</button>
-      <button className="btn btn-danger" onClick={handleSignInWithGoogle}>Sign in with Google</button>
-      <div className="mt-3">
-        <Link to="/register" className="btn btn-link">Register</Link>
+    </div>
+    <div className="row justify-content-center mb-4">
+      <div className="col-sm-12">
+        <button className="btn btn-primary me-3" onClick={handleSignInWithEmail}>Sign in with Email</button>
+        <button className="btn btn-danger" onClick={handleSignInWithGoogle}>Sign in with Google</button>
       </div>
     </div>
+    <div className="row justify-content-center">
+      <div className="col-sm-12">
+        <Link to="/register">
+          <button className="btn btn-success w-100">Create New Account</button>
+        </Link>
+      </div>
+    </div>
+  </div>
   );
 };
 

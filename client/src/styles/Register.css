@@ -1,0 +1,19 @@
+
+/* Register.css */
+.register-container {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .register-button {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  
+  .register-button:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+  

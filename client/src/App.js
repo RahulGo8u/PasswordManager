@@ -7,7 +7,8 @@ import AddPassword from './components/AddPassword';
 import { auth } from './firebase'; // Import the firebase auth instance
 import UserDetail from './components/UserDetail';
 import { Register } from './components/Register'; // Import the Register component
-// import {Footer} from './components/Footer';
+import {Footer} from './components/Footer';
+import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import './App.css';
 
 function App() {
@@ -40,8 +41,8 @@ function App() {
           <Route path="/login" element={<Login setJwtToken={setJwtToken} />} />
           <Route path="/register" element={<Register />} />
           <Route path="/userdetail" element={<UserDetail passwords={passwords} jwtToken={jwtToken} />} />
-        </Routes>
-        {/* {jwtToken && <Footer jwtToken={jwtToken} />} */}
+        </Routes>    
+        <Footer />    
       </Router>
     </div>
   );
