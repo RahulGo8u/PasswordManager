@@ -3,13 +3,14 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase'; // Import the firebase auth instance
 import { Button } from 'react-bootstrap'; // Import the Bootstrap Button component
-
+import axios from 'axios'; 
 function Navbar() {
   const navigate = useNavigate();
 
   // Function to handle the logout
   const handleLogout = async () => {
     try {
+      await logoutUserSession()
       await auth.signOut();
       navigate('/login'); // Redirect to login page after logout
     } catch (error) {
@@ -20,6 +21,14 @@ function Navbar() {
   // Check if the user is logged in
   const isUserLoggedIn = !!auth.currentUser;
   const userEmail = auth.currentUser?.email;
+
+  const logoutUserSession =async()=>{
+    console.log('logoutUserSession');
+    console.log(userEmail);    
+    await axios.post('http://localhost:3002/api/user/logout', {
+        email: userEmail
+      });     
+  }
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">

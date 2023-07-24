@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import axios from 'axios'; // Import Axios
+import bcrypt from 'bcryptjs';
 
 function AddPassword({ onAddPassword }) {
   const [username, setUsername] = useState('');
@@ -16,11 +17,11 @@ function AddPassword({ onAddPassword }) {
     };
 
     try {
-      // Send a POST request to add the new password using Axios
+      const hashedPassword = await bcrypt.hash(password, 10);
       const response = await axios.post('http://localhost:3002/api/userpassword/add', {
         userid: 'U59g0y5or8',
         email: username,
-        password,
+        password:hashedPassword,
         url,
       });
 

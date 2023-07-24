@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { auth } from '../firebase';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import axios from 'axios'; 
+import ErrorPopup from './ErrorPopup'; 
+const userApi = 'http://localhost:3002/api/user/';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -12,16 +15,22 @@ const Login = () => {
   const handleSignInWithEmail = async () => {
     try {
       await auth.signInWithEmailAndPassword(email, password);
-      setError(null);
-      navigate('/userdetail'); // Redirect to UserDetail component after successful login
+      setError(null);      
+      const isLoginValid = await isNotLoggedIn(email);
+      if (isLoginValid) {        
+        await loginUserSession(email, 'test');
+        navigate('/userdetail');
+      }     
     } catch (err) {
-      setError(err.message);
+      setError(err?.data?.message ?? err.message);      
       console.error(err);
     }
   };
 
   const handleSignInWithGoogle = async () => {
     try {
+      console.log('userApi');
+      console.log(userApi);
       const provider = new GoogleAuthProvider();
       const response = await signInWithPopup(auth, provider);
       setError(null);
@@ -34,9 +43,17 @@ const Login = () => {
       const decodedToken = parseJwt(jwtToken);
       console.log('decodedToken');
       console.log(decodedToken);
-      navigate('/userdetail'); // Redirect to UserDetail component after successful login with Google
+
+      const isLoginValid = await isNotLoggedIn(response.user.email);
+      console.log('isLoginValid');
+      console.log(isLoginValid);    
+      if (isLoginValid) {           
+        await loginUserSession(response.user.email, response.user.displayName);
+        navigate('/userdetail');
+      }            
     } catch (err) {
-      setError(err.message);
+      setError(err?.data?.message ?? err.message);
+      await auth.signOut();
       console.error(err);
     }
   };
@@ -50,10 +67,48 @@ const Login = () => {
     }
   };
 
+  const getIp = async () => {
+    try {
+      const response = await axios.get('https://api.ipify.org?format=json');
+      return response.data.ip;
+    } catch (error) {
+      console.error('Error getting IP address:', error);
+      return null;
+    }
+  };
+  
+  const isNotLoggedIn=async(email)=>{
+    console.log('isNotLoggedIn');
+    console.log(email);
+    const response = await axios.post(userApi + 'check-login', {
+      email: email
+    });
+    if (response.status === 200 || response.status === 204) {    
+      return true;     
+    }    
+    else{        
+        ErrorPopup('Error: ' + response.data.message);
+        setError(response.data.message);
+        await auth.signOut();
+        return false;
+    }                          
+  };
+  const loginUserSession =async(email,name)=>{
+    console.log('loginUserSession');
+    console.log(email);
+    const myIp = await getIp();
+    await axios.post('http://localhost:3002/api/user/login', {
+        email: email,
+        name:name,
+        ipAddress:myIp
+      });     
+  }
+
   return (
     <div className="container mt-5 bg-light p-4 rounded" style={{ maxWidth: "400px" }}>
     <h2 className="mb-4 text-center">Login</h2>
     {error && <p className="text-danger mb-3">{error}</p>}
+    {error && <ErrorPopup message={error} onClose={() => setError(null)} />} {/* Show ErrorPopup when error is not null */}
     <div className="row justify-content-center mb-3">
       <div className="col-sm-12">
         <label htmlFor="email" className="form-label">Email</label>
