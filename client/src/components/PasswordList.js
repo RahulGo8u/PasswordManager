@@ -4,6 +4,7 @@ import { Container } from 'react-bootstrap';
 import axios from 'axios'; // Import Axios
 
 function PasswordList() {
+  const secretKey = '8e7c0b920573e67691331358d7b11364';
   const [passwords, setPasswords] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [showAddPassword, setShowAddPassword] = useState(false);
@@ -47,6 +48,16 @@ function PasswordList() {
     password.url.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+   // Function to decrypt text using AES
+   function decryptText(encryptedText, secretKey) {
+    const iv = Buffer.from(encryptedText.slice(0, 32), 'hex');
+    const encryptedData = encryptedText.slice(32);
+    const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(secretKey), iv);
+    let decrypted = decipher.update(encryptedData, 'hex', 'utf8');
+    decrypted += decipher.final('utf8');
+    return decrypted;
+  }
+
   return (
     <Container className="mt-5" style={{ maxWidth: '600px' }}>
       {!showAddPassword && <h1 className="text-center">Password List</h1>}
@@ -84,7 +95,7 @@ function PasswordList() {
                 {filteredPasswords.map((password) => (
                   <tr key={password.id}>
                     <td>{password.email}</td>
-                    <td>{password.password}</td>
+                    <td>{decryptText(password.password,secretKey)}</td>
                     <td>{password.url}</td>
                   </tr>
                 ))}
