@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import axios from 'axios'; // Import Axios
-import bcrypt from 'bcryptjs';
+const crypto = require('crypto');
+
 
 function AddPassword({ onAddPassword }) {
+  const secretKey = '8e7c0b920573e67691331358d7b11364';
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [url, setUrl] = useState('');
@@ -16,12 +18,12 @@ function AddPassword({ onAddPassword }) {
       url,
     };
 
-    try {
-      const hashedPassword = await bcrypt.hash(password, 10);
+    try {      
+      const encryptedPwd = encryptText(password, secretKey);
       const response = await axios.post('http://localhost:3002/api/userpassword/add', {
         userid: 'U59g0y5or8',
         email: username,
-        password:hashedPassword,
+        password:encryptedPwd,
         url,
       });
 
@@ -33,6 +35,18 @@ function AddPassword({ onAddPassword }) {
     } catch (error) {
       console.error(error);
     }
+
+    
+// Function to encrypt text using AES
+  function encryptText(text, secretKey) {
+    const iv = crypto.randomBytes(16); // Initialization Vector
+    const cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(secretKey), iv);
+    let encrypted = cipher.update(text, 'utf8', 'hex');
+    encrypted += cipher.final('hex');
+    // Combine IV and encrypted data into a single string
+    const combinedData = iv.toString('hex') + encrypted;
+    return combinedData;
+  } 
   };
 
   return (
