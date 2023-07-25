@@ -37,21 +37,30 @@ To get started with the Password Manager application, follow the steps below.
 ### Installation
 
 # Install frontend dependencies
+```
 cd client
 npm install
+```
 
 # Install backend dependencies
+```
 cd server
 npm install
+```
 
 # Start the backend server:
+```
 cd server
 npm start
+```
+
 # Start the frontend development server:
+```
 cd client
 npm start
+```
 
-#Access the application in your web browser at http://localhost:3000.
+Access the application in your web browser at http://localhost:3000.
 
 # Contributing
 
