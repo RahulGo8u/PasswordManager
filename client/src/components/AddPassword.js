@@ -43,11 +43,11 @@ function AddPassword({ onAddPassword }) {
 	};
 
 	return (
-		<div className='container pt-5 mt-5 d-flex justify-content-center'>
-			<div className='w-50'>
+		<div className='container pt-5 mt-5 row'>
+			<div className='col-sm-12 col-lg-6'>
 				<img src='./images/password_store.svg' alt='password' />
 			</div>
-			<div className='w-50'>
+			<div className='col-sm-12 col-md-6'>
 				<h2>Add New Password</h2>
 				<hr />
 				<Form onSubmit={handleSubmit}>
