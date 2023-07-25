@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import axios from 'axios'; // Import Axios
 import CryptoJS from 'crypto-js';
+import { Input, Button } from 'react-carbonui';
 
 function AddPassword({ onAddPassword }) {
 	const [username, setUsername] = useState('');
@@ -42,38 +43,36 @@ function AddPassword({ onAddPassword }) {
 	};
 
 	return (
-		<div className='container mt-5 d-flex justify-content-center'>
+		<div className='container pt-5 mt-5 d-flex justify-content-center'>
+			<div className='w-50'>go for </div>
 			<div className='w-50'>
 				<h2>Add New Password</h2>
 				<Form onSubmit={handleSubmit}>
 					<Form.Group className='mb-3' controlId='username'>
 						<Form.Label>Username:</Form.Label>
-						<Form.Control
-							type='text'
+						<Input
+							title='Username / Email'
 							value={username}
+							fullWidth
 							onChange={(e) => setUsername(e.target.value)}
-							style={{ maxWidth: '100%' }}
 						/>
 					</Form.Group>
 
 					<Form.Group className='mb-3' controlId='password'>
 						<Form.Label>Password:</Form.Label>
-						<Form.Control
+						<Input
+							placeholder='Password'
+							fullWidth
 							type='password'
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
-							style={{ maxWidth: '100%' }}
 						/>
 					</Form.Group>
 
 					<Form.Group className='mb-3' controlId='url'>
 						<Form.Label>URL:</Form.Label>
-						<Form.Control
-							type='text'
-							value={url}
-							onChange={(e) => setUrl(e.target.value)}
-							style={{ maxWidth: '100%' }}
-						/>
+
+						<Input placeholder='URL' fullWidth type='url' onChange={(e) => setUrl(e.target.value)} />
 					</Form.Group>
 
 					<Button variant='primary' type='submit'>

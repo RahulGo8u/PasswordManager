@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Navbar from './components/Navbar';
 import { Login } from './components/Login';
 import PasswordList from './components/PasswordList';
 import AddPassword from './components/AddPassword';
@@ -34,7 +33,6 @@ function App() {
 	return (
 		<div className='App'>
 			<Router>
-				{/* <Navbar /> */}
 				<Nav />
 				<Routes>
 					<Route
