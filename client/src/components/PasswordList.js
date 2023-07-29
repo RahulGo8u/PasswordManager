@@ -54,6 +54,12 @@ function PasswordList() {
     return originalMessage;
   };
 
+  const toggleShowPassword = (index) => {
+    const updatedPasswords = [...passwords];
+    updatedPasswords[index].showPassword = !updatedPasswords[index].showPassword;
+    setPasswords(updatedPasswords);
+  };
+
   return (
     <Container className="mt-5" style={{ maxWidth: '600px' }}>
       {!showAddPassword && <h1 className="text-center">Password List</h1>}
@@ -88,10 +94,25 @@ function PasswordList() {
                 </tr>
               </thead>
               <tbody>
-                {filteredPasswords.map((password) => (
+                {filteredPasswords.map((password, index) => (
                   <tr key={password.id}>
                     <td>{password.email}</td>
-                    <td>{decryptText(password.password)}</td>
+                    <td>
+                      {/* Show/Hide Password Button */}
+                      <div style={{ position: 'relative' }}>
+                        <input
+                          type={password.showPassword ? 'text' : 'password'}
+                          value={decryptText(password.password)}
+                          readOnly
+                        />
+                        <button
+                          style={{ position: 'absolute', top: '50%', right: '5px', transform: 'translateY(-50%)' }}
+                          onClick={() => toggleShowPassword(index)}
+                        >
+                          <i className={`fa ${password.showPassword ? 'fa-eye-slash' : 'fa-eye'}`} aria-hidden="true"></i>
+                        </button>
+                      </div>
+                    </td>
                     <td>{password.url}</td>
                   </tr>
                 ))}
