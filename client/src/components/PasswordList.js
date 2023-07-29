@@ -60,8 +60,29 @@ function PasswordList() {
     setPasswords(updatedPasswords);
   };
 
+  const copyToClipboard = (text) => {
+    // Create a temporary input element
+    const tempInput = document.createElement('input');
+    tempInput.value = text;
+    document.body.appendChild(tempInput);
+
+    // Select the text inside the input element
+    tempInput.select();
+    tempInput.setSelectionRange(0, 99999); // For mobile devices
+
+    // Copy the selected text to the clipboard
+    document.execCommand('copy');
+
+    // Remove the temporary input element
+    document.body.removeChild(tempInput);
+  };
+
+  // Alternate row colors
+  const rowColors = ['#a2c1f5', '#a2c1f5'];
+
   return (
     <Container className="mt-6" style={{ maxWidth: '700px' }}>
+      <br/>
       {!showAddPassword && <h1 className="text-center">Password List</h1>}
       {showAddPassword ? (
         <AddPassword onAddPassword={handleAddPasswordSubmit} />
@@ -87,16 +108,19 @@ function PasswordList() {
           <div className="table-responsive">
             <table className="table table-bordered">
               <thead>
-                <tr>
-                  <th>Email</th>
-                  <th>Password</th>
-                  <th>Url</th>
+                <tr style={{ backgroundColor: '#f0f0f0' }}>
+                  {/* Background color for column headers */}
+                  <th style={{ backgroundColor: '#e0e0e0' }}>Email</th>
+                  <th style={{ backgroundColor: '#e0e0e0' }}>Site</th>
+                  <th style={{ backgroundColor: '#e0e0e0' }}>Password</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredPasswords.map((password, index) => (
-                  <tr key={password.id}>
+                  <tr key={password.id} style={{ backgroundColor: rowColors[index % 2] }}>
+                    {/* Alternate row colors */}
                     <td>{password.email}</td>
+                    <td>{password.url}</td>
                     <td>
                       {/* Show/Hide Password Button */}
                       <div style={{ position: 'relative' }}>
@@ -111,9 +135,14 @@ function PasswordList() {
                         >
                           <i className={`fa ${password.showPassword ? 'fa-eye-slash' : 'fa-eye'}`} aria-hidden="true"></i>
                         </button>
+                        <button
+                          style={{ position: 'absolute', top: '50%', right: '35px', transform: 'translateY(-50%)' }}
+                          onClick={() => copyToClipboard(decryptText(password.password))}
+                        >
+                          <i className="fa fa-copy" aria-hidden="true"></i>
+                        </button>
                       </div>
                     </td>
-                    <td>{password.url}</td>
                   </tr>
                 ))}
               </tbody>
