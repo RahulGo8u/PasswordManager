@@ -65,6 +65,11 @@ function Nav() {
 										Password List
 									</Link>
 								</li>
+								<li className='nav-item'>
+									<Link to='/add' className='nav-link'>
+										Add Password
+									</Link>
+								</li>
 
 								<NavDropdown title={`Hi ${auth.currentUser?.displayName}`} id='basic-nav-dropdown'>
 									<NavDropdown.Item onClick={() => navigate('/add')}>Add Password</NavDropdown.Item>
