@@ -28,6 +28,17 @@ router.get('/getall', async (req, res) => {
     }
 });
 
+
+// Get by ID Method - Get a user by ID
+router.get('/gettest/', async (req, res) => {
+    try {      
+        res.json('testdata');
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+
 // Get by ID Method - Get a user by ID
 router.get('/get/:id', async (req, res) => {
     try {
