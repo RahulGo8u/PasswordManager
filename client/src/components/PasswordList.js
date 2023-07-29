@@ -61,7 +61,7 @@ function PasswordList() {
   };
 
   return (
-    <Container className="mt-5" style={{ maxWidth: '600px' }}>
+    <Container className="mt-6" style={{ maxWidth: '700px' }}>
       {!showAddPassword && <h1 className="text-center">Password List</h1>}
       {showAddPassword ? (
         <AddPassword onAddPassword={handleAddPasswordSubmit} />
