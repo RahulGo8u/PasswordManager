@@ -3,30 +3,29 @@ import { Form } from 'react-bootstrap';
 import axios from 'axios'; // Import Axios
 import CryptoJS from 'crypto-js';
 import { Input, Button } from 'react-carbonui';
+import { auth } from '../firebase';
 
 function AddPassword({ onAddPassword }) {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [url, setUrl] = useState('');
-
+	const secretKey = process.env.REACT_APP_SECRET_KEY;
+	const userPasswordAPI = process.env.REACT_APP_USER_PASSWORD_API;
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-
 		const encryptText = (message) => {
-			const ciphertext = CryptoJS.AES.encrypt(message, '8e7c0b920573e67691331358d7b11364').toString();
+			const ciphertext = CryptoJS.AES.encrypt(message, secretKey).toString();
 			return ciphertext;
 		};
-
 		const newPassword = {
 			username,
 			password,
 			url,
 		};
-
 		try {
 			const encryptedPwd = encryptText(password);
-			const response = await axios.post('http://localhost:3002/api/userpassword/add', {
-				userid: 'U59g0y5or8',
+			const response = await axios.post(userPasswordAPI +'add', {
+				loginemail: auth.currentUser?.email,
 				email: username,
 				password: encryptedPwd,
 				url,
