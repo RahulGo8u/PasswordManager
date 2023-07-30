@@ -22,7 +22,6 @@ const usersRoutes = require('./routes/users');
 const usersLoginRoutes = require('./routes/userlogins');
 const usersPasswordRoutes = require('./routes/userpasswords');
 
-
 app.use('/api/user', usersRoutes);
 app.use('/api/user', usersLoginRoutes);
 app.use('/api/userpassword', usersPasswordRoutes);
