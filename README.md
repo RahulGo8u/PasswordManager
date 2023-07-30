@@ -65,3 +65,5 @@ Access the application in your web browser at http://localhost:3000.
 # Contributing
 
 Contributions are welcome! If you find any issues or have suggestions for improvements, feel free to open a new issue or create a pull request. Please ensure that your code follows the existing code style and conventions.
+
+# Star the Repo ⭐
