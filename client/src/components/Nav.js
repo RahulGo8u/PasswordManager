@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase'; // Import the firebase auth instance
@@ -7,7 +6,7 @@ import axios from 'axios';
 
 function Nav() {
 	const navigate = useNavigate();
-
+	const userApi = process.env.REACT_APP_USER_API;
 	// Function to handle the logout
 	const handleLogout = async () => {
 		try {
@@ -25,8 +24,8 @@ function Nav() {
 	const logoutUserSession = async () => {
 		console.log('logoutUserSession');
 		console.log(auth.currentUser?.email);
-		await axios.post('http://localhost:3002/api/user/logout', {
-			email: auth.currentUser?.email,
+		await axios.post(userApi+'logout', {
+			loginemail: auth.currentUser?.email,
 		});
 	};
 

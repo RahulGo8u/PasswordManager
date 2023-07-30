@@ -3,17 +3,20 @@ import AddPassword from './AddPassword';
 import { Container } from 'react-bootstrap';
 import axios from 'axios'; // Import Axios
 import CryptoJS from 'crypto-js';
+import { auth } from '../firebase';
 
 function PasswordList() {
   const [passwords, setPasswords] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [showAddPassword, setShowAddPassword] = useState(false);
+  const userPasswordAPI = process.env.REACT_APP_USER_PASSWORD_API;
+  const secretKey = process.env.REACT_APP_SECRET_KEY;
 
   useEffect(() => {
     // Fetch user passwords from your API
     const fetchPasswords = async () => {
-      try {
-        const response = await axios.get('http://localhost:3002/api/userpassword/getall/U59g0y5or8');
+      try {        
+        const response = await axios.get(userPasswordAPI+'getall/'+auth.currentUser?.email);
         console.log(response);
         setPasswords(response.data);
       } catch (error) {
@@ -37,8 +40,6 @@ function PasswordList() {
   };
 
   const handleAddPasswordSubmit = (newPassword) => {
-    // Perform the API call to add the new password to the server here
-
     // Update the state and hide the AddPassword component
     setPasswords([...passwords, newPassword]);
     setShowAddPassword(false);
@@ -49,7 +50,7 @@ function PasswordList() {
   );
 
   const decryptText = (ciphertext) => {
-    const bytes = CryptoJS.AES.decrypt(ciphertext, '8e7c0b920573e67691331358d7b11364');
+    const bytes = CryptoJS.AES.decrypt(ciphertext, secretKey);
     const originalMessage = bytes.toString(CryptoJS.enc.Utf8);
     return originalMessage;
   };

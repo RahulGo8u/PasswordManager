@@ -4,7 +4,8 @@ import { auth } from '../firebase';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import axios from 'axios'; 
 import ErrorPopup from './ErrorPopup'; 
-const userApi = 'http://localhost:3002/api/user/';
+const userApi = process.env.REACT_APP_USER_API;
+const ipAddressAPI = process.env.REACT_APP_GET_IP_API;
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -33,20 +34,8 @@ const Login = () => {
       console.log(userApi);
       const provider = new GoogleAuthProvider();
       const response = await signInWithPopup(auth, provider);
-      setError(null);
-
-      // Get the JWT token from the user object
-      const jwtToken = await response.user.getIdToken();
-      console.log('jwt');
-      console.log(jwtToken);
-      // Parse the token to get its details
-      const decodedToken = parseJwt(jwtToken);
-      console.log('decodedToken');
-      console.log(decodedToken);
-
+      setError(null);      
       const isLoginValid = await isNotLoggedIn(response.user.email);
-      console.log('isLoginValid');
-      console.log(isLoginValid);    
       if (isLoginValid) {           
         await loginUserSession(response.user.email, response.user.displayName);
         navigate('/userdetail');
@@ -58,18 +47,9 @@ const Login = () => {
     }
   };
 
-  // Function to parse the JWT token
-  const parseJwt = (token) => {
-    try {
-      return JSON.parse(atob(token.split('.')[1]));
-    } catch (e) {
-      return null;
-    }
-  };
-
   const getIp = async () => {
     try {
-      const response = await axios.get('https://api.ipify.org?format=json');
+      const response = await axios.get(ipAddressAPI);
       return response.data.ip;
     } catch (error) {
       console.error('Error getting IP address:', error);
@@ -81,7 +61,7 @@ const Login = () => {
     console.log('isNotLoggedIn');
     console.log(email);
     const response = await axios.post(userApi + 'check-login', {
-      email: email
+      loginemail: email
     });
     if (response.status === 200 || response.status === 204) {    
       return true;     
@@ -97,8 +77,8 @@ const Login = () => {
     console.log('loginUserSession');
     console.log(email);
     const myIp = await getIp();
-    await axios.post('http://localhost:3002/api/user/login', {
-        email: email,
+    await axios.post(userApi + 'login', {
+        loginemail: email,
         name:name,
         ipAddress:myIp
       });     

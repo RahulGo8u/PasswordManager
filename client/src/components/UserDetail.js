@@ -1,20 +1,8 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase';
-import { Container, Row, Col, Button } from 'react-bootstrap'; // Import Bootstrap components
+import { Container, Row, Col } from 'react-bootstrap'; // Import Bootstrap components
 
 const UserDetail = ({ passwords, jwtToken }) => {
-	const navigate = useNavigate();
-
-	const handleLogout = async () => {
-		try {
-			await auth.signOut();
-			navigate('/login'); // Redirect to login page after logout
-		} catch (error) {
-			console.error(error);
-		}
-	};
-
 	return (
 		<Container>
 			<Row className='mt-4'>

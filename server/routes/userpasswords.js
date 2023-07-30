@@ -1,20 +1,28 @@
 const express = require('express');
 const UserPassword = require('../models/userpasswords');
+const User = require('../models/users');
 const router = express.Router();
-
 // Add user password
 router.post('/add', async (req, res) => {
-    try {
-        const newUserPassword = new UserPassword({
-            userid: req.body.userid,           
-            email: req.body.email,
-            password: req.body.password,
-            url: req.body.url,
-            addedon: new Date() // Set the addedon field to the current date and time
-        });
-
-        await newUserPassword.save();
-        res.status(200).json({ message: 'User Password Added' });
+    try 
+    {
+        var user = await User.findOne({ email: req.body.loginemail });        
+        if (!user) 
+        {
+            res.status(500).json({ message: 'User not exists' });
+        }
+        else
+        {
+            const newUserPassword = new UserPassword({
+                userid: user.userid,           
+                email: req.body.email,
+                password: req.body.password,
+                url: req.body.url,
+                addedon: new Date() // Set the addedon field to the current date and time
+            });
+            await newUserPassword.save();
+            res.status(200).json({ message: 'User Password Added' });
+        }
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
@@ -22,10 +30,19 @@ router.post('/add', async (req, res) => {
 
 
 // Get all user passwords by userid
-router.get('/getall/:userid', async (req, res) => {
-    try {
-        const userPasswords = await UserPassword.find({ userid: req.params.userid });
-        res.json(userPasswords);
+router.get('/getall/:loginemail', async (req, res) => {
+    try 
+    {
+        var user = await User.findOne({ email: req.params.loginemail });        
+        if (!user) 
+        {
+            res.status(500).json({ message: 'User not exists' });
+        }
+        else{
+            const userPasswords = await UserPassword.find({ userid: user.userid });
+            res.json(userPasswords);
+        }
+        
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

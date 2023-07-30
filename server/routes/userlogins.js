@@ -7,13 +7,13 @@ const router = express.Router();
 router.post('/login', async (req, res) => {
     try {
         console.log(req.body);
-        var user = await User.findOne({ email: req.body.email });        
+        var user = await User.findOne({ email: req.body.loginemail });        
         if (!user) 
         {
             console.log('user not exists');
             user = new User({
                 name: req.body.name,
-                email: req.body.email
+                email: req.body.loginemail
             });    
             user = await user.save();   
             console.log('user created');         
@@ -34,8 +34,9 @@ router.post('/login', async (req, res) => {
 router.post('/logout', async (req, res) => {
     try 
     {      
+        
         console.log(req.body);
-        const user = await User.findOne({ email: req.body.email });        
+        const user = await User.findOne({ email: req.body.loginemail });        
         if (!user) {
             return res.status(404).json({ message: "Email not exists" });
         }
@@ -65,7 +66,7 @@ router.get('/getuserlogins/:userid', async (req, res) => {
 // User logout
 router.post('/check-login', async (req, res) => {
     try {        
-        const user = await User.findOne({ email: req.body.email });        
+        const user = await User.findOne({ email: req.body.loginemail });        
         if (user) 
         {
             const loggedInUser = await findLoggedInUser(user.userid);
