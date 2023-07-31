@@ -73,8 +73,13 @@ function AddPassword({ onAddPassword }) {
 
 					<Form.Group className='mb-3' controlId='url'>
 						<Form.Label>URL:</Form.Label>
-
-						<Input placeholder='URL' fullWidth type='url' onChange={(e) => setUrl(e.target.value)} />
+						
+						<Input
+              placeholder='URL'
+              fullWidth
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+            />
 					</Form.Group>
 
 					<Button variant='primary' type='submit'>
