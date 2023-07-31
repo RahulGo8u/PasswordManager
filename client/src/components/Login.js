@@ -35,12 +35,11 @@ const Login = () => {
       const provider = new GoogleAuthProvider();
       const response = await signInWithPopup(auth, provider);
       setError(null);      
-      // const isLoginValid = await isNotLoggedIn(response.user.email);
-      // if (isLoginValid) {           
-        
-      // }     
-      // await loginUserSession(response.user.email, response.user.displayName);
-      navigate('/userdetail');       
+      const isLoginValid = await isNotLoggedIn(response.user.email);
+      if (isLoginValid) {           
+        await loginUserSession(response.user.email, response.user.displayName);
+        navigate('/userdetail');
+      }            
     } catch (err) {
       setError(err?.data?.message ?? err.message);
       await auth.signOut();
