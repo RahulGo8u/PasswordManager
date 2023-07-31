@@ -39,9 +39,9 @@ router.get('/gettest/', async (req, res) => {
 
 
 // Get by ID Method - Get a user by ID
-router.get('/get/:id', async (req, res) => {
+router.get('/get/:email', async (req, res) => {
     try {
-        const user = await User.findOne({ userid: req.params.id });
+        const user = await User.findOne({ email: req.params.email });
         res.json(user);
     } catch (error) {
         res.status(500).json({ message: error.message });
