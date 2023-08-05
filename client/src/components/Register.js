@@ -22,11 +22,18 @@ export const Register = () => {
   };
 
   return (
-    <Container className="register-container mt-5 bg-light p-4 rounded" style={{ maxWidth: "400px" }}>
+    <Container
+      className="register-container mt-5 bg-light p-4 rounded"
+      style={{ maxWidth: "400px" }}
+    >
       <Row className="justify-content-center">
         <Col xs={12} md={8}>
           <h2 className="mb-4 text-center">Register</h2>
-          {error && <Alert variant="danger" className="mb-3">{error}</Alert>}
+          {error && (
+            <Alert variant="danger" className="mb-3">
+              {error}
+            </Alert>
+          )}
           <Form>
             <Form.Group controlId="formBasicEmail">
               <Form.Label>Email address</Form.Label>
@@ -47,7 +54,7 @@ export const Register = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </Form.Group>
-            <br/>
+            <br />
             <Row className="justify-content-center">
               <Button
                 variant="primary"

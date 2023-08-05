@@ -1,0 +1,10 @@
+body {
+  /* overflow-y: hidden; */
+}
+canvas {
+  position: relative;
+  top: 0;
+  /* 60px is navbar */
+  height: calc(100vh - 60px);
+  width: 100vw;
+}
