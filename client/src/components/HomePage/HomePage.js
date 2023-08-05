@@ -6,22 +6,20 @@ import { Leva } from "leva";
 import ContributorSection from "./ContributorSection";
 import HomeSection from "./HomeSection";
 import { Suspense } from "react";
+import { LoadingSpinnerForCanvas } from "./LoadingSpinnerForCanvas";
 
 export const HomePage = () => {
   return (
     <>
       <Canvas>
-        <Suspense fallback={"<h1>Loading ...</h1>"}>
+        <Suspense fallback={<LoadingSpinnerForCanvas />}>
           <Environment preset="apartment" />
-          <ambientLight intensity={2} />
           <Expirence />
         </Suspense>
       </Canvas>
 
-      <div>
-        <HomeSection />
-        <ContributorSection />
-      </div>
+      <HomeSection />
+      <ContributorSection />
       <Leva />
     </>
   );
